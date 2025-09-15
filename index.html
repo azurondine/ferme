@@ -3,374 +3,108 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>La plus belle ferme du monde — Chiens, chats, lapins, moutons et chevaux</title>
-  <meta name="description" content="Vente de chiens, chats, lapins, moutons et chevaux. Espace revendeur protégé. Commande avec vérification client et pro-forma par email." />
+  <title>La plus belle ferme du monde — Catalogue</title>
+  <meta name="description" content="Chiens, chats, lapins, moutons et chevaux. Commande et espace pro." />
   <style>
-    :root {
-      --sky: #E6F4FF;
-      --ink: #2A6F7C;
-      --ink-hover: #1E5964;
-      --muted: #666;
-      --border:#dfe7ef;
-      --card:#fff;
-    }
+    :root { --sky:#E6F4FF; --ink:#2A6F7C; --ink2:#1E5964; --muted:#666; --border:#dfe7ef; --card:#fff; }
     *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f9f9f9;color:#222;}
-    header{background:var(--sky);color:var(--ink);padding:12px 20px;position:sticky;top:0;z-index:10;border-bottom:1px solid var(--border);}
-    header h1{margin:0;font-size:20px;color:var(--ink);}
-    nav a{color:var(--ink);margin:0 10px;text-decoration:none;font-weight:bold;padding:6px 8px;border-radius:8px;}
-    nav a:hover{background:#dff1ff;text-decoration:none;}
-    .btn{background:var(--ink);color:#fff;padding:10px 16px;border:none;border-radius:8px;cursor:pointer;}
-    .btn:hover{background:var(--ink-hover);}
-    .hero{position:relative;text-align:center;}
-    .hero img{width:100%;max-height:460px;object-fit:cover;border-bottom:1px solid var(--border);}
-    .section{padding:40px 20px;max-width:1100px;margin:0 auto;}
-    h2{color:var(--ink);margin-top:0;}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f9f9f9;color:#222}
+    header{background:var(--sky);color:var(--ink);padding:12px 20px;position:sticky;top:0;z-index:10;border-bottom:1px solid var(--border)}
+    header h1{margin:0;font-size:20px;color:var(--ink)}
+    nav a{color:var(--ink);margin:0 10px;text-decoration:none;font-weight:bold;padding:6px 8px;border-radius:8px}
+    nav a:hover{background:#dff1ff}
+    .section{padding:32px 20px;max-width:1100px;margin:0 auto}
+    h2{color:var(--ink);margin-top:0}
     .grid{display:grid;gap:20px}
-    .grid.products{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
-    .card{background:var(--card);border:1px solid #ddd;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.03);}
-    .card img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;}
-    .price{font-weight:bold;color:var(--ink);margin:8px 0;}
-    .muted{color:var(--muted);font-size:12px}
-    footer{margin-top:40px;padding:20px;background:#eef7ff;text-align:center;color:var(--ink);border-top:1px solid var(--border);}
-    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
-    label{display:block;margin:8px 0 4px}
-    input[type=number], input[type=email], input[type=text], input[type=date], input[type=password]{
-      padding:10px;border:1px solid #cfd8dc;border-radius:8px;width:100%;
-    }
-    input[type=number]{max-width:120px;text-align:right;}
-    .panel{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;}
-    .notice{background:#fff; border:1px dashed var(--border); padding:12px 16px; border-radius:10px; color:#345; font-size:14px;}
-    .hidden{display:none}
-    .stack{display:grid;gap:10px}
+    .grid.products{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+    .card img{width:100%;height:140px;object-fit:cover;border-radius:8px;border:1px solid var(--border)}
+    .price{font-weight:bold;color:#111;margin:.25rem 0 .5rem}
+    footer{padding:20px;text-align:center;color:var(--muted);border-top:1px solid var(--border)}
+    .note{color:var(--muted);font-size:.9rem}
   </style>
 </head>
 <body>
 <header>
   <h1>La plus belle ferme du monde</h1>
   <nav>
-    <a href="#accueil">Accueil</a>
-    <a href="#produits">Produits</a>
-    <a href="#commander">Commander</a>
-    <a href="#revendeurs">Revendeurs</a>
+    <a href="#catalogue">Catalogue</a>
+    <a href="#commande">Commander</a>
+    <a href="#pro">Espace pro</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
 
 <main>
-  <section id="accueil" class="hero">
-    <img src="accueil-ferme.png" alt="Ferme — chiens, chats, lapins, chèvres et moutons" onerror="this.src='https://via.placeholder.com/1200x460?text=La+plus+belle+ferme+du+monde'">
-  </section>
-
-  <section id="produits" class="section">
-    <h2>Nos animaux</h2>
+  <section id="catalogue" class="section">
+    <h2>Catalogue</h2>
     <div class="grid products">
       <div class="card">
         <img src="chiens.png" alt="Chiens">
         <h3>Chiens</h3>
-      <div class=\"price\" id=\"price_chiens\">—</div></div>
+        <div class="price" id="price_chiens">—</div>
+        <div class="note">Prix unitaire</div>
+      </div>
       <div class="card">
         <img src="chats.png" alt="Chats">
         <h3>Chats</h3>
-      <div class=\"price\" id=\"price_chats\">—</div></div>
+        <div class="price" id="price_chats">—</div>
+        <div class="note">Prix unitaire</div>
+      </div>
       <div class="card">
         <img src="lapins.png" alt="Lapins">
         <h3>Lapins</h3>
-      <div class=\"price\" id=\"price_lapins\">—</div></div>
+        <div class="price" id="price_lapins">—</div>
+        <div class="note">Prix unitaire</div>
+      </div>
       <div class="card">
         <img src="moutons.png" alt="Moutons">
         <h3>Moutons</h3>
-      <div class=\"price\" id=\"price_moutons\">—</div></div>
+        <div class="price" id="price_moutons">—</div>
+        <div class="note">Prix unitaire</div>
+      </div>
       <div class="card">
         <img src="chevaux.png" alt="Chevaux">
         <h3>Chevaux</h3>
-      <div class=\"price\" id=\"price_chevaux\">—</div></div>
-    </div>
-  </section>
-
-  <section id="commander" class="section">
-    <h2>Commander (clients)</h2>
-    <div class="panel stack">
-      <p class="muted">Sélectionnez vos animaux, indiquez votre e‑mail pour retrouver vos coordonnées, puis confirmez.</p>
-      <div class="grid products" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
-        <div class="card"><img src="chiens.png" alt="Chiens"><h4>Chiens</h4><label>Quantité <input type="number" min="0" value="0" id="q_chiens"></label></div>
-        <div class="card"><img src="chats.png" alt="Chats"><h4>Chats</h4><label>Quantité <input type="number" min="0" value="0" id="q_chats"></label></div>
-        <div class="card"><img src="lapins.png" alt="Lapins"><h4>Lapins</h4><label>Quantité <input type="number" min="0" value="0" id="q_lapins"></label></div>
-        <div class="card"><img src="moutons.png" alt="Moutons"><h4>Moutons</h4><label>Quantité <input type="number" min="0" value="0" id="q_moutons"></label></div>
-        <div class="card"><img src="chevaux.png" alt="Chevaux"><h4>Chevaux</h4><label>Quantité <input type="number" min="0" value="0" id="q_chevaux"></label></div>
-      </div>
-
-      <div class="row">
-        <div style="flex:1;min-width:240px">
-          <label>E‑mail du client</label>
-          <input type="email" id="c_email" placeholder="client@exemple.com" required>
-        </div>
-        <div>
-          <label>&nbsp;</label>
-          <button class="btn" id="btn_lookup">Continuer</button>
-        </div>
-      </div>
-
-      <div id="customer_info" class="hidden">
-        <h3>Vos coordonnées</h3>
-        <div class="row">
-          <div style="flex:1;min-width:240px"><label>Nom / Société</label><input type="text" id="c_name"></div>
-          <div style="flex:1;min-width:240px"><label>Téléphone</label><input type="text" id="c_phone"></div>
-        </div>
-        <div class="row">
-          <div style="flex:1;min-width:240px"><label>Adresse ligne 1</label><input type="text" id="c_addr1"></div>
-          <div style="flex:1;min-width:240px"><label>Adresse ligne 2</label><input type="text" id="c_addr2"></div>
-        </div>
-        <div class="row">
-          <div style="flex:1;min-width:140px"><label>Code postal</label><input type="text" id="c_postcode"></div>
-          <div style="flex:1;min-width:180px"><label>Ville</label><input type="text" id="c_city"></div>
-          <div style="flex:1;min-width:180px"><label>Pays</label><input type="text" id="c_country"></div>
-        </div>
-        <div class="row">
-          <div style="flex:1;min-width:200px"><label>Date de livraison souhaitée</label><input type="date" id="c_delivery"></div>
-        </div>
-        <div class="row">
-          <div class="notice" style="flex:1">Si nous avons retrouvé vos coordonnées, vérifiez et corrigez si besoin, puis confirmez la commande.</div>
-          <button class="btn" id="btn_submit">Envoyer la commande</button>
-        </div>
-        <div id="client_message" class="muted"></div>
+        <div class="price" id="price_chevaux">—</div>
+        <div class="note">Prix unitaire</div>
       </div>
     </div>
-  </section>
-
-  <section id="revendeurs" class="section">
-    <h2>Espace revendeurs</h2>
-    <div class="panel stack">
-      <div class="row">
-        <div style="max-width:260px;width:100%"><label>Mot de passe</label><input type="password" id="p_pass" placeholder="Mot de passe"></div>
-        <div><label>&nbsp;</label><button class="btn" id="p_unlock">Valider</button></div>
-      </div>
-
-      <div id="pro_area" class="hidden">
-        <p class="muted">Sélectionnez vos quantités, puis entrez votre e‑mail pour retrouver vos infos et valider.</p>
-        <div class="grid products" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
-          <div class="card"><img src="chiens.png" alt=""><h4>Chiens</h4><label>Quantité <input type="number" min="0" value="0" id="p_chiens"></label></div>
-          <div class="card"><img src="chats.png" alt=""><h4>Chats</h4><label>Quantité <input type="number" min="0" value="0" id="p_chats"></label></div>
-          <div class="card"><img src="lapins.png" alt=""><h4>Lapins</h4><label>Quantité <input type="number" min="0" value="0" id="p_lapins"></label></div>
-          <div class="card"><img src="moutons.png" alt=""><h4>Moutons</h4><label>Quantité <input type="number" min="0" value="0" id="p_moutons"></label></div>
-          <div class="card"><img src="chevaux.png" alt=""><h4>Chevaux</h4><label>Quantité <input type="number" min="0" value="0" id="p_chevaux"></label></div>
-        </div>
-        <div class="row">
-          <div style="flex:1;min-width:240px"><label>E‑mail du revendeur</label><input type="email" id="p_email" placeholder="revendeur@exemple.com"></div>
-          <div><label>&nbsp;</label><button class="btn" id="p_lookup">Continuer</button></div>
-        </div>
-
-        <div id="pro_info" class="hidden">
-          <h3>Coordonnées revendeur</h3>
-          <div class="row">
-            <div style="flex:1;min-width:240px"><label>Nom / Société</label><input type="text" id="p_name"></div>
-            <div style="flex:1;min-width:240px"><label>Téléphone</label><input type="text" id="p_phone"></div>
-          </div>
-          <div class="row">
-            <div style="flex:1;min-width:240px"><label>Adresse ligne 1</label><input type="text" id="p_addr1"></div>
-            <div style="flex:1;min-width:240px"><label>Adresse ligne 2</label><input type="text" id="p_addr2"></div>
-          </div>
-          <div class="row">
-            <div style="flex:1;min-width:140px"><label>Code postal</label><input type="text" id="p_postcode"></div>
-            <div style="flex:1;min-width:180px"><label>Ville</label><input type="text" id="p_city"></div>
-            <div style="flex:1;min-width:180px"><label>Pays</label><input type="text" id="p_country"></div>
-          </div>
-          <div class="row">
-            <div style="flex:1;min-width:200px"><label>Date de livraison souhaitée</label><input type="date" id="p_delivery"></div>
-          </div>
-          <div class="row">
-            <div class="notice" style="flex:1">Vérifiez vos informations, puis confirmez la commande revendeur.</div>
-            <button class="btn" id="p_submit">Envoyer la commande</button>
-          </div>
-          <div id="pro_message" class="muted"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="section">
-    <h2>Contact</h2>
-    <p><a href="mailto:azurondine@gmail.com">azurondine@gmail.com</a></p>
   </section>
 </main>
 
-<footer>© <span id="year"></span> La plus belle ferme du monde</footer>
+<footer>© Ferme — Démo</footer>
 
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+const API_BASE = "https://script.google.com/macros/s/AKfycbwE21UpEfvq-umSwTj9iZV4DGN1lq2-Ybm-Dbh2MguoP7BAqIZQFgwvrQahcuxjMbL9bg/exec";
 
-  // ======= CONFIG (replace placeholders) =======
-  const API_BASE = "https://script.google.com/macros/s/AKfycbxr29JY19VjM2Hwo4jUhnnHp_C_JvSB4aYnDfImDLd_Di45FLNoPnBlPGSEsdy5_JUa/exec"; // e.g. https://script.google.com/macros/s/AKfycb.../exec
-<script>const API_BASE = "https://script.google.com/macros/s/AKfycbwE21UpEfvq-umSwTj9iZV4DGN1lq2-Ybm-Dbh2MguoP7BAqIZQFgwvrQahcuxjMbL9bg/exec";</script>
+async function fetchPrices() {
+  const r = await fetch(API_BASE + "/prices");
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  const data = await r.json();
+  if (!data || !data.prices) throw new Error("Invalid payload");
+  return data.prices;
+}
 
-  const PRO_PASSWORD = "ferme2025"; // change this
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
 
-  // ======= HELPERS =======
-  const $ = (id)=>document.getElementById(id);
-  function asInt(v){ const n=parseInt(v,10); return isNaN(n)?0:n; }
-  function payloadFrom(prefix){
-    return {
-      chiens: asInt($(prefix+"chiens").value),
-      chats: asInt($(prefix+"chats").value),
-      lapins: asInt($(prefix+"lapins").value),
-      moutons: asInt($(prefix+"moutons").value),
-      chevaux: asInt($(prefix+"chevaux").value)
-    };
+(async () => {
+  try {
+    const p = await fetchPrices();
+    setText("price_chiens",   p.chiens  + " €");
+    setText("price_chats",    p.chats   + " €");
+    setText("price_lapins",   p.lapins  + " €");
+    setText("price_moutons",  p.moutons + " €");
+    setText("price_chevaux",  p.chevaux + " €");
+  } catch (err) {
+    console.error("Prices load failed:", err);
+    ["price_chiens","price_chats","price_lapins","price_moutons","price_chevaux"]
+      .forEach(id => setText(id, "N/A"));
   }
-
-  async function lookupCustomer(email){
-    try{
-      const url = API_BASE + "/customer?email=" + encodeURIComponent(email);
-      const res = await fetch(url, { method:"GET" });
-      if(!res.ok) throw new Error("Lookup failed");
-      return await res.json(); // {found, customer}
-    }catch(e){
-      return { found:false, error:true };
-    }
-  }
-
-  async function placeOrder(body){
-    const res = await fetch(API_BASE + "/order", {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify(body)
-    });
-    if(!res.ok) throw new Error("Order failed");
-    return res.json(); // { ok, proformaNumber }
-  }
-
-  function fillIfPresent(c, prefix){
-    if(!c) return;
-    $(prefix+"name").value = c.company_name || c.contact_name || "";
-    $(prefix+"phone").value = c.phone || "";
-    $(prefix+"addr1").value = c.address_line1 || "";
-    $(prefix+"addr2").value = c.address_line2 || "";
-    $(prefix+"postcode").value = c.postcode || "";
-    $(prefix+"city").value = c.city || "";
-    $(prefix+"country").value = c.country || "";
-  }
-
-  // ======= CLIENT FLOW =======
-  $("btn_lookup").addEventListener("click", async ()=>{
-    const email = $("c_email").value.trim();
-    const qty = payloadFrom("q_");
-    const totalQty = Object.values(qty).reduce((a,b)=>a+b,0);
-    if(!email){ alert("Veuillez saisir votre e‑mail."); return; }
-    if(totalQty===0){ alert("Veuillez choisir au moins un animal."); return; }
-
-    $("client_message").textContent = "Recherche client...";
-    $("customer_info").classList.remove("hidden");
-    const res = await lookupCustomer(email);
-    if(res.found && res.customer){ fillIfPresent(res.customer, "c_"); $("client_message").textContent = "Coordonnées retrouvées. Vérifiez et corrigez si besoin."; }
-    else if(res.error){ $("client_message").textContent = "Impossible de vérifier (API). Remplissez vos infos ci‑dessous."; }
-    else{ $("client_message").textContent = "Nouveau client : merci de compléter vos coordonnées."; }
-  });
-
-  $("btn_submit").addEventListener("click", async ()=>{
-    const qty = payloadFrom("q_");
-    const totalQty = Object.values(qty).reduce((a,b)=>a+b,0);
-    if(totalQty===0){ alert("Aucune quantité"); return; }
-
-    const body = {
-      type: "client",
-      email: $("c_email").value.trim(),
-      customer: {
-        company_name: $("c_name").value.trim(),
-        contact_name: $("c_name").value.trim(),
-        phone: $("c_phone").value.trim(),
-        address_line1: $("c_addr1").value.trim(),
-        address_line2: $("c_addr2").value.trim(),
-        postcode: $("c_postcode").value.trim(),
-        city: $("c_city").value.trim(),
-        country: $("c_country").value.trim()
-      },
-      items: qty,
-      delivery_date: $("c_delivery").value
-    };
-    try{
-      const res = await placeOrder(body);
-      alert("Commande envoyée. Pro‑forma : " + (res.proformaNumber || "créé"));
-    }catch(err){
-      alert("Erreur lors de l'envoi de la commande.");
-    }
-  });
-
-  // ======= PRO / RESELLER FLOW =======
-  $("p_unlock").addEventListener("click", ()=>{
-    const v = $("p_pass").value.trim();
-    if(v === PRO_PASSWORD){ $("pro_area").classList.remove("hidden"); }
-    else{ alert("Mot de passe incorrect"); }
-  });
-
-  $("p_lookup").addEventListener("click", async ()=>{
-    const email = $("p_email").value.trim();
-    const qty = payloadFrom("p_");
-    const totalQty = Object.values(qty).reduce((a,b)=>a+b,0);
-    if(!email){ alert("Veuillez saisir l'e‑mail du revendeur."); return; }
-    if(totalQty===0){ alert("Veuillez choisir au moins un animal."); return; }
-    $("pro_info").classList.remove("hidden");
-    $("pro_message").textContent = "Recherche revendeur...";
-    const res = await lookupCustomer(email);
-    if(res.found && res.customer){ fillIfPresent(res.customer, "p_"); $("pro_message").textContent = "Coordonnées retrouvées. Vérifiez et corrigez si besoin."; }
-    else if(res.error){ $("pro_message").textContent = "Impossible de vérifier (API). Remplissez vos infos."; }
-    else{ $("pro_message").textContent = "Nouveau revendeur : merci de compléter vos coordonnées."; }
-  });
-
-  $("p_submit").addEventListener("click", async ()=>{
-    const qty = payloadFrom("p_");
-    const totalQty = Object.values(qty).reduce((a,b)=>a+b,0);
-    if(totalQty===0){ alert("Aucune quantité"); return; }
-    const body = {
-      type: "reseller",
-      email: $("p_email").value.trim(),
-      customer: {
-        company_name: $("p_name").value.trim(),
-        contact_name: $("p_name").value.trim(),
-        phone: $("p_phone").value.trim(),
-        address_line1: $("p_addr1").value.trim(),
-        address_line2: $("p_addr2").value.trim(),
-        postcode: $("p_postcode").value.trim(),
-        city: $("p_city").value.trim(),
-        country: $("p_country").value.trim()
-      },
-      items: qty,
-      delivery_date: $("p_delivery").value
-    };
-    try{
-      const res = await placeOrder(body);
-      alert("Commande revendeur envoyée. Pro‑forma : " + (res.proformaNumber || "créé"));
-    }catch(err){
-      alert("Erreur lors de l'envoi de la commande revendeur.");
-    }
-  });
-</script>
-<script>
-
-  // === Prices loader (Google Apps Script proxy) ===
-  async function loadPrices(){
-    try{
-      const res = await fetch(API_BASE + "/prices");
-      if(!res.ok) throw new Error("HTTP "+res.status);
-      const data = await res.json();
-      const prices = data.prices || {};
-      const fmt = (n)=> new Intl.NumberFormat('fr-FR',{ style:'currency', currency:'EUR'}).format(Number(n||0));
-      const set = (id, v)=>{ const el = document.getElementById(id); if(el){ el.textContent = fmt(v); } };
-      set("price_chiens",  prices.chiens);
-      set("price_chats",   prices.chats);
-      set("price_lapins",  prices.lapins);
-      set("price_moutons", prices.moutons);
-      set("price_chevaux", prices.chevaux);
-      // If there is a total price element in your form, you can recompute on change here as well.
-    } catch(e){
-      console.warn("Prix indisponibles", e);
-    }
-  }
-  if (typeof API_BASE !== "undefined") {
-    loadPrices();
-  } else {
-    console.warn("API_BASE non défini — définissez-le vers votre WebApp Apps Script");
-  }
-
+})();
 </script>
 </body>
 </html>
