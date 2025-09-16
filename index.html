@@ -42,7 +42,7 @@
       font-weight: bold;
       color: #333;
     }
-    #debug {
+    #debug, #t_result {
       margin: 20px;
       background: #fff3cd;
       border: 1px solid #ffeeba;
@@ -50,6 +50,27 @@
       border-radius: 8px;
       font-size: 12px;
       white-space: pre-wrap;
+    }
+    section#test {
+      padding:20px;
+      max-width:700px;
+      margin:0 auto;
+      background:white;
+      border-radius:8px;
+      box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    }
+    section#test h2 { margin-top:0; }
+    section#test input, section#test select {
+      padding:8px;
+      margin:6px 0;
+    }
+    section#test button {
+      padding:10px 14px;
+      background:#4CAF50;
+      color:#fff;
+      border:0;
+      border-radius:6px;
+      cursor:pointer;
     }
   </style>
 </head>
@@ -86,49 +107,109 @@
   </section>
 
   <pre id="debug">Chargement des prix…</pre>
-<script>
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRTrVzppwLLG8_tD1a7tg6cg8q1hrFmB9fyR1XxL_zrNqZVC38i0tiozWNvInfqFQRvP1mdif6PlE05/pub?output=csv";
 
-function setText(id, value) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = value;
-}
+  <!-- Formulaire de test -->
+  <section id="test">
+    <h2>Test: ajouter un client</h2>
+    <p style="color:#555">Saisis un email + nom, choisis un article et une quantité, puis clique sur « Save test customer ».</p>
 
-async function fetchPrices() {
-  const r = await fetch(SHEET_URL);
-  if (!r.ok) throw new Error("HTTP " + r.status);
-  const text = await r.text();
-  // Transformer CSV -> objet
-  const lines = text.trim().split("\n").slice(1); // sauter l'entête
-  const prices = {};
-  for (let line of lines) {
-    const [animal, price] = line.split(",");
-    prices[animal.trim()] = price.trim();
+    <label>Email<br>
+      <input id="t_email" type="email" required style="width:100%;">
+    </label>
+
+    <label>Nom<br>
+      <input id="t_name" type="text" style="width:100%;">
+    </label>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;">
+      <label>Produit<br>
+        <select id="t_prod">
+          <option value="Chiens">Chiens</option>
+          <option value="Chats">Chats</option>
+          <option value="Lapins">Lapins</option>
+          <option value="Moutons">Moutons</option>
+          <option value="Chevaux">Chevaux</option>
+        </select>
+      </label>
+
+      <label>Quantité<br>
+        <input id="t_qty" type="number" min="1" value="1" style="width:100px;">
+      </label>
+    </div>
+
+    <button id="t_btn">Save test customer</button>
+    <pre id="t_result"></pre>
+  </section>
+
+  <script>
+  // --- URL des données de prix (Google Sheets publiée) ---
+  const SHEET_JSON = "https://opensheet.elk.sh/2PACX-1vRTrVzppwLLG8_tD1a7tg6cg8q1hrFmB9fyR1XxL_zrNqZVC38i0tiozWNvInfqFQRvP1mdif6PlE05/Feuille1";
+
+  // --- URL du script Apps Script (ton endpoint) ---
+  const API_CUSTOMER = "https://script.google.com/macros/s/AKfycby-UB-qNjd1LucZ1SdwPmPiMgBLsvsbs3aycD2pAogIUFAB9Y1awyiTPht5NHaZ5K70hA/exec";
+
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
   }
-  return prices;
-}
 
-function showDebug(msg, extra) {
-  const pre = document.getElementById('debug');
-  if (pre) pre.textContent = String(msg) + (extra ? "\n" + JSON.stringify(extra, null, 2) : "");
-  console.log("[DEBUG]", msg, extra || "");
-}
-
-window.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const p = await fetchPrices();
-
-    setText("price_chiens",   p.chiens  + " €");
-    setText("price_chats",    p.chats   + " €");
-    setText("price_lapins",   p.lapins  + " €");
-    setText("price_moutons",  p.moutons + " €");
-    setText("price_chevaux",  p.chevaux + " €");
-
-    showDebug("✅ Prix chargés avec succès", p);
-  } catch (err) {
-    showDebug("❌ Échec chargement prix:", { message: err.message });
-    ["price_chiens","price_chats","price_lapins","price_moutons","price_chevaux"]
-      .forEach(id => setText(id, "N/A"));
+  async function fetchPrices() {
+    const r = await fetch(SHEET_JSON);
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return await r.json();
   }
-});
-</script>
+
+  function showDebug(msg, extra) {
+    const pre = document.getElementById('debug');
+    if (pre) pre.textContent = String(msg) + (extra ? "\n" + JSON.stringify(extra, null, 2) : "");
+    console.log("[DEBUG]", msg, extra || "");
+  }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const rows = await fetchPrices();
+      let p = {};
+      rows.forEach(row => { p[row.Animal] = row.Price; });
+
+      setText("price_chiens",   p.chiens  + " €");
+      setText("price_chats",    p.chats   + " €");
+      setText("price_lapins",   p.lapins  + " €");
+      setText("price_moutons",  p.moutons + " €");
+      setText("price_chevaux",  p.chevaux + " €");
+
+      showDebug("✅ Prix chargés avec succès", p);
+    } catch (err) {
+      showDebug("❌ Échec chargement prix:", { message: err.message });
+      ["price_chiens","price_chats","price_lapins","price_moutons","price_chevaux"]
+        .forEach(id => setText(id, "N/A"));
+    }
+
+    // --- Gestion du bouton "Save test customer" ---
+    document.getElementById("t_btn").addEventListener("click", async () => {
+      const email = document.getElementById("t_email").value.trim();
+      const name  = document.getElementById("t_name").value.trim();
+      const prod  = document.getElementById("t_prod").value;
+      const qty   = parseInt(document.getElementById("t_qty").value, 10) || 1;
+
+      const resultBox = document.getElementById("t_result");
+      resultBox.textContent = "⏳ Sending…";
+
+      try {
+        const r = await fetch(API_CUSTOMER, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            customer: { Email: email, Nom: name },
+            order: { product: prod, quantity: qty }
+          })
+        });
+        const data = await r.json();
+        resultBox.textContent = "✅ Success:\n" + JSON.stringify(data, null, 2);
+      } catch (err) {
+        resultBox.textContent = "❌ Error: " + err.message;
+      }
+    });
+  });
+  </script>
+</body>
+</html>
