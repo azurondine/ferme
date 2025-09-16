@@ -5,18 +5,52 @@
   <title>Ferme – Catalogue</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
-    header { background: #4CAF50; color: white; padding: 1em; text-align: center; }
-    nav a { margin: 0 10px; color: white; text-decoration: none; font-weight: bold; }
-    .catalogue { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px; }
-    .item { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
-    .item h3 { margin: 10px 0 5px; }
-    .price { font-weight: bold; color: #333; }
-    #debug, #t_result { margin: 20px; background: #fff3cd; border: 1px solid #ffeeba; padding: 8px; border-radius: 8px; font-size: 12px; white-space: pre-wrap; }
-    section#test { padding:20px; max-width:700px; margin:0 auto 40px; background:white; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
-    section#test h2 { margin-top:0; }
-    section#test input, section#test select { padding:8px; margin:6px 0; }
-    section#test button { padding:10px 14px; background:#4CAF50; color:#fff; border:0; border-radius:6px; cursor:pointer; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+    }
+    header {
+      background: #4CAF50;
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
+    nav a {
+      margin: 0 10px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .catalogue {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .item {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .item h3 {
+      margin: 10px 0 5px;
+    }
+    .price {
+      font-weight: bold;
+      color: #333;
+    }
+    #debug {
+      margin: 20px;
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
@@ -53,52 +87,31 @@
 
   <pre id="debug">Chargement des prix…</pre>
 
-  <!-- Test form -->
-  <section id="test">
-    <h2>Test: ajouter un client</h2>
-    <p style="color:#555">Email + nom + un article → “Save test customer”.</p>
-
-    <label>Email<br>
-      <input id="t_email" type="email" required style="width:100%;">
-    </label>
-
-    <label>Nom<br>
-      <input id="t_name" type="text" style="width:100%;">
-    </label>
-
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;">
-      <label>Produit<br>
-        <select id="t_prod">
-          <option value="Chiens">Chiens</option>
-          <option value="Chats">Chats</option>
-          <option value="Lapins">Lapins</option>
-          <option value="Moutons">Moutons</option>
-          <option value="Chevaux">Chevaux</option>
-        </select>
-      </label>
-
-      <label>Quantité<br>
-        <input id="t_qty" type="number" min="1" value="1" style="width:100px;">
-      </label>
-    </div>
-
-    <button id="t_btn">Save test customer</button>
-    <pre id="t_result"></pre>
-  </section>
-
   <script>
-  // --- PRICES from your published CSV (works in all browsers) ---
-  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRTrVzppwLLG8_tD1a7tg6cg8q1hrFmB9fyR1XxL_zrNqZVC38i0tiozWNvInfqFQRvP1mdif6PlE05/pub?output=csv";
-
-  // --- Your Apps Script Web App URL for orders/customers ---
-  const API_BASE = "https://script.google.com/macros/s/AKfycby-UB-qNjd1LucZ1SdwPmPiMgBLsvsbs3aycD2pAogIUFAB9Y1awyiTPht5NHaZ5K70hA/exec";
-
-  // will hold numeric prices so we can send unit price in orders
-  const CURRENT_PRICES = { chiens: 0, chats: 0, lapins: 0, moutons: 0, chevaux: 0 };
+  const SHEET_ID = "1-Hhi_FWdYCJEuHjwtUn_kvUZ4G3ZWYzvKJiYyoUqP5U";
+  const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
 
   function setText(id, value) {
     const el = document.getElementById(id);
     if (el) el.textContent = value;
+  }
+
+  async function fetchPrices() {
+    const r = await fetch(SHEET_URL, { cache: "no-store" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+
+    const text = await r.text();
+    const jsonStr = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1];
+    const data = JSON.parse(jsonStr);
+
+    const table = data.table.rows;
+    const prices = {};
+    table.forEach(row => {
+      const animal = row.c[0].v;
+      const price = row.c[1].v;
+      prices[animal] = price;
+    });
+    return prices;
   }
 
   function showDebug(msg, extra) {
@@ -107,96 +120,22 @@
     console.log("[DEBUG]", msg, extra || "");
   }
 
-  // Minimal CSV parser (handles commas and newlines simply)
-  function parseCSV(text) {
-    // simple split (your data has no embedded commas/quotes)
-    return text.trim().split(/\r?\n/).map(line => line.split(","));
-  }
-
-  async function loadPricesFromCSV() {
-    const res = await fetch(CSV_URL + (CSV_URL.includes("?") ? "&" : "?") + "ts=" + Date.now(), { cache: "no-store" });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const text = await res.text();
-    const rows = parseCSV(text);
-    // Expect header: Animal,Price
-    let start = 0;
-    if (rows.length && rows[0][0].toLowerCase().includes("animal")) start = 1;
-
-    const map = {};
-    for (let i = start; i < rows.length; i++) {
-      const animal = (rows[i][0] || "").trim().toLowerCase();
-      let val = (rows[i][1] || "").trim().replace(",", ".");
-      const num = Number(val);
-      if (!animal) continue;
-      map[animal] = isNaN(num) ? 0 : num;
-    }
-    return map; // keys in lowercase: chiens, chats, lapins...
-  }
-
-  function productKeyFromLabel(label) {
-    // Convert "Chiens" -> "chiens", etc.
-    return String(label || "").trim().toLowerCase();
-  }
-
-  // ---- Page init
   window.addEventListener('DOMContentLoaded', async () => {
-    // 1) Load & show prices
     try {
-      const prices = await loadPricesFromCSV();
-      // fill globals & DOM
-      ["chiens","chats","lapins","moutons","chevaux"].forEach(k => {
-        CURRENT_PRICES[k] = Number(prices[k] || 0);
-      });
+      const p = await fetchPrices();
 
-      setText("price_chiens",   CURRENT_PRICES.chiens  + " €");
-      setText("price_chats",    CURRENT_PRICES.chats   + " €");
-      setText("price_lapins",   CURRENT_PRICES.lapins  + " €");
-      setText("price_moutons",  CURRENT_PRICES.moutons + " €");
-      setText("price_chevaux",  CURRENT_PRICES.chevaux + " €");
+      setText("price_chiens",   p.chiens  + " €");
+      setText("price_chats",    p.chats   + " €");
+      setText("price_lapins",   p.lapins  + " €");
+      setText("price_moutons",  p.moutons + " €");
+      setText("price_chevaux",  p.chevaux + " €");
 
-      showDebug("✅ Prix chargés avec succès", CURRENT_PRICES);
+      showDebug("✅ Prix chargés avec succès", p);
     } catch (err) {
       showDebug("❌ Échec chargement prix:", { message: err.message });
       ["price_chiens","price_chats","price_lapins","price_moutons","price_chevaux"]
         .forEach(id => setText(id, "N/A"));
     }
-
-    // 2) Hook the test button to create/update a customer + add one order line
-    document.getElementById("t_btn").addEventListener("click", async () => {
-      const email = document.getElementById("t_email").value.trim();
-      const name  = document.getElementById("t_name").value.trim();
-      const prodLabel = document.getElementById("t_prod").value; // e.g., "Chiens"
-      const qty   = Math.max(1, parseInt(document.getElementById("t_qty").value, 10) || 1);
-
-      const out = document.getElementById("t_result");
-      if (!email) { out.textContent = "❌ Email requis"; return; }
-
-      const key = productKeyFromLabel(prodLabel); // "chiens"
-      const unit = CURRENT_PRICES[key] || 0;
-
-      // Build the order payload expected by your Apps Script:
-      const payload = {
-        type: "order",
-        customer: { Email: email, Nom: name || "" },
-        items: [
-          { produit: prodLabel, quantite: qty, prix: unit }
-        ]
-        // dateLivraison: "2025-10-01" // optional
-      };
-
-      out.textContent = "⏳ Envoi en cours…";
-      try {
-        const r = await fetch(API_BASE, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" }, // avoid preflight/CORS
-          body: JSON.stringify(payload)
-        });
-        const data = await r.json();
-        out.textContent = "✅ Réponse:\n" + JSON.stringify(data, null, 2);
-      } catch (e) {
-        out.textContent = "❌ Erreur: " + e.message;
-      }
-    });
   });
   </script>
 </body>
