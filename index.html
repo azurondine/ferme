@@ -88,7 +88,8 @@
   <pre id="debug">Chargement des prix…</pre>
 
   <script>
-  const API_BASE = "https://script.google.com/macros/s/AKfycbzkbt6arPKUghgdCGsoeuiy_LgIdczNUPcPBLXsG68Br7cV35bYeUa9ntqQA4VELIWytQ/exec";
+  // 🔑 Utilise ton URL "googleusercontent.com/macros/echo?..." ici
+  const API_BASE = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiLJAPDd-Mu7z9GaxwY1gdjW-dLJ7LJNIhDo9pHyVxzmjpkSrMrPO6xq_IzghhmYLpv_VMXqByxCRus-0QYF7vCdcrpwqroyuc2UISOvIpsJ6fiS8MNFFUJ26VZxWRgXGNZizjj0Fz2p4uzwik2Fvfg39CHAGSvSSjt65GkCxRSf_O7Q_aq0I8H2_YYk-HM2LYHLRZpdXwC5O6loDCs2CgOx5VyRTM1CCMAzP3O2e4gcMFkcJWjViks1KfXG-IyrnIj-6mondjs8Ev10anPewT87vFR4-7K1jyJ_fq2&lib=MX57ecDFR7XsZGJwdEE7aurqTHW1WdBYf";
 
   function setText(id, value) {
     const el = document.getElementById(id);
@@ -96,7 +97,7 @@
   }
 
   async function fetchPrices() {
-    const url = API_BASE + "/prices?ts=" + Date.now();
+    const url = API_BASE + "&path=prices&ts=" + Date.now();
     const r = await fetch(url, { cache: "no-store" });
     if (!r.ok) throw new Error("HTTP " + r.status);
     return await r.json();
@@ -130,4 +131,3 @@
   </script>
 </body>
 </html>
-
