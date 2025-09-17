@@ -88,8 +88,7 @@
   <pre id="debug">Chargement des prix…</pre>
 
   <script>
-  const SHEET_ID = "1-Hhi_FWdYCJEuHjwtUn_kvUZ4G3ZWYzvKJiYyoUqP5U";
-  const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
+  const API_BASE = "https://script.google.com/macros/s/AKfycbzkbt6arPKUghgdCGsoeuiy_LgIdczNUPcPBLXsG68Br7cV35bYeUa9ntqQA4VELIWytQ/exec";
 
   function setText(id, value) {
     const el = document.getElementById(id);
@@ -97,21 +96,10 @@
   }
 
   async function fetchPrices() {
-    const r = await fetch(SHEET_URL, { cache: "no-store" });
+    const url = API_BASE + "/prices?ts=" + Date.now();
+    const r = await fetch(url, { cache: "no-store" });
     if (!r.ok) throw new Error("HTTP " + r.status);
-
-    const text = await r.text();
-    const jsonStr = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1];
-    const data = JSON.parse(jsonStr);
-
-    const table = data.table.rows;
-    const prices = {};
-    table.forEach(row => {
-      const animal = row.c[0].v;
-      const price = row.c[1].v;
-      prices[animal] = price;
-    });
-    return prices;
+    return await r.json();
   }
 
   function showDebug(msg, extra) {
@@ -122,7 +110,9 @@
 
   window.addEventListener('DOMContentLoaded', async () => {
     try {
-      const p = await fetchPrices();
+      const data = await fetchPrices();
+      if (!data || !data.prices) throw new Error("Pas de clé prices dans la réponse");
+      const p = data.prices;
 
       setText("price_chiens",   p.chiens  + " €");
       setText("price_chats",    p.chats   + " €");
@@ -140,3 +130,4 @@
   </script>
 </body>
 </html>
+
